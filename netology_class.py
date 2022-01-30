@@ -8,7 +8,11 @@ class Student:
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
-    
+
+# при реализации данной функциии в проверку только студенты, которые проходят курс
+# реализована проверка только по списку courses_in_progress 
+# студенты, которые закончили курс, оценки лекторам по даннму предмету ставить уже не могут    
+# так же добавил проверку на ввод данных по оценке
     def rate_hw(self, lecturer, course, grade):
         if (isinstance(lecturer, Lecturer) and course in lecturer.courses_attached 
             and course in self.courses_in_progress and str(grade).isnumeric() and 0 < int(grade) < 11):
@@ -167,4 +171,4 @@ print(lecturer_1 > lecturer_2)
 
 average_rating_student_course([student_1, student_2], 'Python')
 
-average_rating_lecturer_course([lecturer_1, lecturer_2], 'Pyton')
+average_rating_lecturer_course([lecturer_1, lecturer_2], 'Python')
