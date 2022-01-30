@@ -1,3 +1,5 @@
+from typing import List
+
 class Student:
     def __init__(self, name, surname, gender):
         self.name = name
@@ -70,7 +72,7 @@ class Lecturer(Mentor):
         return self._average_rating() < other._average_rating()
 
     def __str__(self) -> str:
-        return f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self._average_rating()} {self.courses_attached}'
+        return f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self._average_rating()}'
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
@@ -86,52 +88,83 @@ class Reviewer(Mentor):
     def __str__(self) -> str:
         return f'Имя: {self.name}\nФамилия: {self.surname}'
 
+def average_rating_student_course(students: List[Student], course):
+    sum_rating = 0
+    number_of_ratings = 0
+    for student in students:
+        if course in student.grades:
+            sum_rating += sum(student.grades[course])
+            number_of_ratings += len(student.grades[course])
+    if number_of_ratings:
+        print(f'Средняя оценка по курсу {course} у студентов: {sum_rating / number_of_ratings}.')
+    else:
+        print(f'Оценок по курсу {course} нет') 
 
-best_student = Student('Василий', 'Пупло', 'муж.')
-best_student.courses_in_progress += ['Python']
-best_student.courses_in_progress += ['VB']
-best_student.finished_courses += ['C++']
+def average_rating_lecturer_course(lecturers: List[Lecturer], course):
+    sum_rating = 0
+    number_of_ratings = 0
+    for lecture in lecturers:
+        if course in lecture.grades:
+            sum_rating += sum(lecture.grades[course])
+            number_of_ratings += len(lecture.grades[course])
+    if number_of_ratings:
+        print(f'Средняя оценка по курсу {course} у лекторов: {sum_rating / number_of_ratings}.')
+    else:
+        print(f'Оценок по курсу {course} нет') 
 
-student = Student('Софья', 'Ковалевская', 'жен.')
-student.courses_in_progress += ['Python']
-student.courses_in_progress += ['VB']
 
+student_1 = Student('Василий', 'Пупло', 'муж.')
+student_1.courses_in_progress += ['Python']
+student_1.courses_in_progress += ['VB']
+student_1.finished_courses += ['C++']
 
-cool_Reviewer = Reviewer('Sergei', 'Bykov')
-cool_Reviewer.courses_attached += ['VB']
-cool_Reviewer.courses_attached += ['Python']
-# print(cool_Reviewer.name, cool_Reviewer.surname,cool_Reviewer.courses_attached)
+student_2 = Student('Софья', 'Ковалевская', 'жен.')
+student_2.courses_in_progress += ['Python']
+student_2.courses_in_progress += ['C++']
+student_2.finished_courses += ['VB']
 
-cool_lecturer = Lecturer('Some', 'Buddy')
-cool_lecturer.courses_attached += ['Python']
-cool_lecturer.courses_attached += ['VB']
+reviewer_1 = Reviewer('Сергей', 'Петров')
+reviewer_1.courses_attached += ['VB']
+reviewer_1.courses_attached += ['Python']
 
-cool_lecturer_2 = Lecturer('Some_1', 'Buddy_1')
-cool_lecturer_2.courses_attached += ['VB']
+reviewer_2 = Reviewer('Андрей', 'Сидиров')
+reviewer_2.courses_attached += ['Python']
+reviewer_2.courses_attached += ['C++']
 
-cool_Reviewer.rate_hw(student, 'Python', 8)
-cool_Reviewer.rate_hw(student, 'Python', 9)
-cool_Reviewer.rate_hw(student, 'Python', 7)
-# cool_Reviewer.rate_hw(best_student, 'VB', 8)
-# cool_Reviewer.rate_hw(best_student, 'Python', 9)
+lecturer_1 = Lecturer('Александр', 'Строгий')
+lecturer_1.courses_attached += ['Python']
+lecturer_1.courses_attached += ['VB']
 
-# print(cool_lecturer.grades)
-# print(cool_lecturer.courses_attached)
-# print(cool_lecturer_2.courses_attached)
+lecturer_2 = Lecturer('Иван', 'Добрый')
+lecturer_2.courses_attached += ['Python']
+lecturer_2.courses_attached += ['C++']
 
-cool_Reviewer.rate_hw(best_student, 'Python', 7)
-cool_Reviewer.rate_hw(best_student, 'VB', 8)
-cool_Reviewer.rate_hw(best_student, 'Python', 9)
- 
-# print(cool_Reviewer)
-print(cool_lecturer)
-print(cool_lecturer_2)
-# print(best_student)
-# print(student)
-# # print(best_student < student)
-# if best_student < cool_lecturer:
-#     print('Софья круче!')
-# elif best_student > student:
-#     print('Василий круче!')
-# else:
-#     print('Все хороши!')
+reviewer_1.rate_hw(student_1, 'Python', 9)
+reviewer_1.rate_hw(student_2, 'Python', 10)
+reviewer_1.rate_hw(student_1, 'VB', 9)
+
+reviewer_2.rate_hw(student_1, 'Python', 9)
+reviewer_2.rate_hw(student_2, 'Python', 10)
+reviewer_2.rate_hw(student_2, 'C++', 10)
+
+student_1.rate_hw(lecturer_1, 'Python', 9)
+student_1.rate_hw(lecturer_1, 'VB', 9)
+student_1.rate_hw(lecturer_1, 'Python', 8)
+
+student_2.rate_hw(lecturer_2, 'Python', 8)
+student_2.rate_hw(lecturer_2, 'C++', 8)
+student_2.rate_hw(lecturer_2, 'Python', 9)
+
+print(student_1)
+
+print(reviewer_1)
+
+print(lecturer_1)
+
+print(student_1 > student_2)
+
+print(lecturer_1 > lecturer_2)
+
+average_rating_student_course([student_1, student_2], 'Python')
+
+average_rating_lecturer_course([lecturer_1, lecturer_2], 'Pyton')
