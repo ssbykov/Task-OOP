@@ -43,7 +43,7 @@ class Student:
     def __str__(self) -> str:
         return (f'Имя: {self.name}\n'
             f'Фамилия: {self.surname}\n'
-            f'Средняя оценка за домашние задания: {self._average_rating()}\n'
+            f'Средняя оценка за домашние задания: {round(self._average_rating(), 1)}\n'
             f'Курсы в процессе изучения: {", ".join(self.courses_in_progress)}\n'
             f'Завершенные курсы: {", ".join(self.finished_courses)}')
 
@@ -76,7 +76,7 @@ class Lecturer(Mentor):
         return self._average_rating() < other._average_rating()
 
     def __str__(self) -> str:
-        return f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self._average_rating()}'
+        return f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {round(self._average_rating(), 1)}'
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
@@ -100,7 +100,7 @@ def average_rating_student_course(students: List[Student], course):
             sum_rating += sum(student.grades[course])
             number_of_ratings += len(student.grades[course])
     if number_of_ratings:
-        print(f'Средняя оценка по курсу {course} у студентов: {sum_rating / number_of_ratings}.')
+        print(f'Средняя оценка по курсу {course} у студентов: {round(sum_rating / number_of_ratings, 1)}.')
     else:
         print(f'Оценок по курсу {course} нет') 
 
@@ -112,7 +112,7 @@ def average_rating_lecturer_course(lecturers: List[Lecturer], course):
             sum_rating += sum(lecture.grades[course])
             number_of_ratings += len(lecture.grades[course])
     if number_of_ratings:
-        print(f'Средняя оценка по курсу {course} у лекторов: {sum_rating / number_of_ratings}.')
+        print(f'Средняя оценка по курсу {course} у лекторов: {round(sum_rating / number_of_ratings, 1)}.')
     else:
         print(f'Оценок по курсу {course} нет') 
 
@@ -144,11 +144,11 @@ lecturer_2.courses_attached += ['Python']
 lecturer_2.courses_attached += ['C++']
 
 reviewer_1.rate_hw(student_1, 'Python', 9)
-reviewer_1.rate_hw(student_2, 'Python', 10)
+reviewer_1.rate_hw(student_2, 'Python', 5)
 reviewer_1.rate_hw(student_1, 'VB', 9)
 
 reviewer_2.rate_hw(student_1, 'Python', 9)
-reviewer_2.rate_hw(student_2, 'Python', 10)
+reviewer_2.rate_hw(student_2, 'Python', 3)
 reviewer_2.rate_hw(student_2, 'C++', 10)
 
 student_1.rate_hw(lecturer_1, 'Python', 9)
@@ -156,7 +156,7 @@ student_1.rate_hw(lecturer_1, 'VB', 9)
 student_1.rate_hw(lecturer_1, 'Python', 8)
 
 student_2.rate_hw(lecturer_2, 'Python', 8)
-student_2.rate_hw(lecturer_2, 'C++', 8)
+student_2.rate_hw(lecturer_2, 'VB', 8)
 student_2.rate_hw(lecturer_2, 'Python', 9)
 
 print(student_1)
