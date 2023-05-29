@@ -1,4 +1,8 @@
+# https://github.com/netology-code/py-homeworks-basic/tree/master/6.classes
+
+
 from typing import List
+
 
 class Student:
     def __init__(self, name, surname, gender):
@@ -9,13 +13,13 @@ class Student:
         self.courses_in_progress = []
         self.grades = {}
 
-# При реализации данной функциии в проверку включены только студенты, которые проходят курс
-# Соответственно реализована проверка только по списку courses_in_progress.
-# Студенты, которые закончили курс, оценки лекторам по даннму предмету ставить уже не могут.    
-# Так же добавил проверку на ввод данных по оценке.
+    # При реализации данной функциии в проверку включены только студенты, которые проходят курс
+    # Соответственно реализована проверка только по списку courses_in_progress.
+    # Студенты, которые закончили курс, оценки лекторам по даннму предмету ставить уже не могут.
+    # Так же добавил проверку на ввод данных по оценке.
     def rate_hw(self, lecturer, course, grade):
-        if (isinstance(lecturer, Lecturer) and course in lecturer.courses_attached 
-            and course in self.courses_in_progress and str(grade).isnumeric() and 0 < int(grade) < 11):
+        if (isinstance(lecturer, Lecturer) and course in lecturer.courses_attached
+                and course in self.courses_in_progress and str(grade).isnumeric() and 0 < int(grade) < 11):
             if course in lecturer.grades:
                 lecturer.grades[course] += [grade]
             else:
@@ -24,13 +28,9 @@ class Student:
             return 'Ошибка'
 
     def _average_rating(self):
-        sum_rating = 0
-        number_of_ratings = 0
-        for grade in self.grades.values():
-            sum_rating += sum(grade)
-            number_of_ratings += len(grade)
-        if number_of_ratings:
-            return sum_rating / number_of_ratings
+        grades_lst = sum(self.grades.values(), [])
+        if grades_lst:
+            return sum(grades_lst) / len(grades_lst)
         else:
             return 'Оценок нет'
 
@@ -42,10 +42,11 @@ class Student:
 
     def __str__(self) -> str:
         return (f'Имя: {self.name}\n'
-            f'Фамилия: {self.surname}\n'
-            f'Средняя оценка за домашние задания: {round(self._average_rating(), 1)}\n'
-            f'Курсы в процессе изучения: {", ".join(self.courses_in_progress)}\n'
-            f'Завершенные курсы: {", ".join(self.finished_courses)}')
+                f'Фамилия: {self.surname}\n'
+                f'Средняя оценка за домашние задания: {round(self._average_rating(), 1)}\n'
+                f'Курсы в процессе изучения: {", ".join(self.courses_in_progress)}\n'
+                f'Завершенные курсы: {", ".join(self.finished_courses)}')
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -53,19 +54,16 @@ class Mentor:
         self.surname = surname
         self.courses_attached = []
 
+
 class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades = {}
 
     def _average_rating(self):
-        sum_rating = 0
-        number_of_ratings = 0
-        for grade in self.grades.values():
-            sum_rating += sum(grade)
-            number_of_ratings += len(grade)
-        if number_of_ratings:
-            return sum_rating / number_of_ratings
+        grades_lst = sum(self.grades.values(), [])
+        if grades_lst:
+            return sum(grades_lst) / len(grades_lst)
         else:
             return 'Оценок нет'
 
@@ -78,10 +76,11 @@ class Lecturer(Mentor):
     def __str__(self) -> str:
         return f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {round(self._average_rating(), 1)}'
 
+
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
         if (isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress
-            and str(grade).isnumeric() and 0 < int(grade) < 11):
+                and str(grade).isnumeric() and 0 < int(grade) < 11):
             if course in student.grades:
                 student.grades[course] += [grade]
             else:
@@ -91,6 +90,7 @@ class Reviewer(Mentor):
 
     def __str__(self) -> str:
         return f'Имя: {self.name}\nФамилия: {self.surname}'
+
 
 def average_rating_student_course(students: List[Student], course):
     sum_rating = 0
@@ -102,19 +102,19 @@ def average_rating_student_course(students: List[Student], course):
     if number_of_ratings:
         print(f'Средняя оценка по курсу {course} у студентов: {round(sum_rating / number_of_ratings, 1)}.')
     else:
-        print(f'Оценок по курсу {course} нет') 
+        print(f'Оценок по курсу {course} нет')
+
 
 def average_rating_lecturer_course(lecturers: List[Lecturer], course):
     sum_rating = 0
     number_of_ratings = 0
     for lecture in lecturers:
-        if course in lecture.grades:
-            sum_rating += sum(lecture.grades[course])
-            number_of_ratings += len(lecture.grades[course])
+        sum_rating += sum(lecture.grades.get(course))
+        number_of_ratings += len(lecture.grades.get(course))
     if number_of_ratings:
         print(f'Средняя оценка по курсу {course} у лекторов: {round(sum_rating / number_of_ratings, 1)}.')
     else:
-        print(f'Оценок по курсу {course} нет') 
+        print(f'Оценок по курсу {course} нет')
 
 
 student_1 = Student('Василий', 'Пупло', 'муж.')
