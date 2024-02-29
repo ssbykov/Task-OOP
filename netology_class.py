@@ -96,9 +96,8 @@ def average_rating_student_course(students: List[Student], course):
     sum_rating = 0
     number_of_ratings = 0
     for student in students:
-        if course in student.grades:
-            sum_rating += sum(student.grades[course])
-            number_of_ratings += len(student.grades[course])
+        sum_rating += sum(student.grades.get(course, []))
+        number_of_ratings += len(student.grades.get(course, []))
     if number_of_ratings:
         print(f'Средняя оценка по курсу {course} у студентов: {round(sum_rating / number_of_ratings, 1)}.')
     else:
@@ -109,8 +108,8 @@ def average_rating_lecturer_course(lecturers: List[Lecturer], course):
     sum_rating = 0
     number_of_ratings = 0
     for lecture in lecturers:
-        sum_rating += sum(lecture.grades.get(course))
-        number_of_ratings += len(lecture.grades.get(course))
+        sum_rating += sum(lecture.grades.get(course, []))
+        number_of_ratings += len(lecture.grades.get(course, []))
     if number_of_ratings:
         print(f'Средняя оценка по курсу {course} у лекторов: {round(sum_rating / number_of_ratings, 1)}.')
     else:
