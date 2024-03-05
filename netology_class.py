@@ -93,25 +93,21 @@ class Reviewer(Mentor):
 
 
 def average_rating_student_course(students: List[Student], course):
-    sum_rating = 0
-    number_of_ratings = 0
-    for student in students:
-        sum_rating += sum(student.grades.get(course, []))
-        number_of_ratings += len(student.grades.get(course, []))
-    if number_of_ratings:
-        print(f'Средняя оценка по курсу {course} у студентов: {round(sum_rating / number_of_ratings, 1)}.')
+
+    grades_lst = sum([student.grades.get(course, []) for student in students], [])
+
+    if grades_lst:
+        print(f'Средняя оценка по курсу {course} у студентов: {round(sum(grades_lst) / len(grades_lst), 1)}.')
     else:
         print(f'Оценок по курсу {course} нет')
 
 
 def average_rating_lecturer_course(lecturers: List[Lecturer], course):
-    sum_rating = 0
-    number_of_ratings = 0
-    for lecture in lecturers:
-        sum_rating += sum(lecture.grades.get(course, []))
-        number_of_ratings += len(lecture.grades.get(course, []))
-    if number_of_ratings:
-        print(f'Средняя оценка по курсу {course} у лекторов: {round(sum_rating / number_of_ratings, 1)}.')
+
+    grades_lst = sum([lecturer.grades.get(course, []) for lecturer in lecturers], [])
+
+    if grades_lst:
+        print(f'Средняя оценка по курсу {course} у лекторов: {round(sum(grades_lst) / len(grades_lst), 1)}.')
     else:
         print(f'Оценок по курсу {course} нет')
 
